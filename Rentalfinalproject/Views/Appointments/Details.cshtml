@@ -1,0 +1,48 @@
+﻿@model Rentalfinalproject.Models.Appointment
+
+@{
+    ViewBag.Title = "Appointment Details";
+}
+
+<h2>Appointment Details</h2>
+
+<div>
+    <h4>Appointment</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AppointmentDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppointmentDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User.FullName) <!-- Tenant -->
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.FullName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User1.FullName) <!-- Property Manager -->
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User1.FullName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Apartment.UnitNumber) <!-- Apartment -->
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Apartment.UnitNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.AppointmentID }) |
+    @Html.ActionLink("Back to List", "Index")
+</div>

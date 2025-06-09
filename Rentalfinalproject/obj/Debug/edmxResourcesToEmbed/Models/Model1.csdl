@@ -1,0 +1,266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="RentalDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Apartment">
+    <Key>
+      <PropertyRef Name="ApartmentID" />
+    </Key>
+    <Property Name="ApartmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PropertyID" Type="Int32" />
+    <Property Name="UnitNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="RentAmount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="NumberOfRooms" Type="Int32" Nullable="false" />
+    <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Property" Relationship="Self.FK__Apartment__Prope__3F466844" FromRole="Apartments" ToRole="Properties" />
+    <NavigationProperty Name="Appointments" Relationship="Self.FK__Appointme__Apart__4AB81AF0" FromRole="Apartments" ToRole="Appointments" />
+    <NavigationProperty Name="RentalAgreements" Relationship="Self.FK__RentalAgr__Apart__44FF419A" FromRole="Apartments" ToRole="RentalAgreements" />
+  </EntityType>
+  <EntityType Name="Appointment">
+    <Key>
+      <PropertyRef Name="AppointmentID" />
+    </Key>
+    <Property Name="AppointmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TenantID" Type="Int32" />
+    <Property Name="PropertyManagerID" Type="Int32" />
+    <Property Name="ApartmentID" Type="Int32" />
+    <Property Name="AppointmentDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Apartment" Relationship="Self.FK__Appointme__Apart__4AB81AF0" FromRole="Appointments" ToRole="Apartments" />
+    <NavigationProperty Name="User" Relationship="Self.FK__Appointme__Prope__49C3F6B7" FromRole="Appointments" ToRole="Users" />
+    <NavigationProperty Name="User1" Relationship="Self.FK__Appointme__Tenan__48CFD27E" FromRole="Appointments" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Message">
+    <Key>
+      <PropertyRef Name="MessageID" />
+    </Key>
+    <Property Name="MessageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SenderID" Type="Int32" />
+    <Property Name="ReceiverID" Type="Int32" />
+    <Property Name="MessageContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="SentAt" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="User" Relationship="Self.FK__Messages__Receiv__5070F446" FromRole="Messages" ToRole="Users" />
+    <NavigationProperty Name="User1" Relationship="Self.FK__Messages__Sender__4F7CD00D" FromRole="Messages" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Property">
+    <Key>
+      <PropertyRef Name="PropertyID" />
+    </Key>
+    <Property Name="PropertyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OwnerID" Type="Int32" />
+    <Property Name="PropertyName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="State" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ZipCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Apartments" Relationship="Self.FK__Apartment__Prope__3F466844" FromRole="Properties" ToRole="Apartments" />
+    <NavigationProperty Name="User" Relationship="Self.FK__Propertie__Owner__3B75D760" FromRole="Properties" ToRole="Users" />
+    <Property Name="ManagerID" Type="Int32" />
+    <NavigationProperty Name="User1" Relationship="RentalDBModel.FK__Propertie__Manag__52593CB8" FromRole="Property" ToRole="User" />
+  </EntityType>
+  <EntityType Name="RentalAgreement">
+    <Key>
+      <PropertyRef Name="AgreementID" />
+    </Key>
+    <Property Name="AgreementID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TenantID" Type="Int32" />
+    <Property Name="ApartmentID" Type="Int32" />
+    <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="PaymentStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MonthlyRent" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="DueDate" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="Apartment" Relationship="Self.FK__RentalAgr__Apart__44FF419A" FromRole="RentalAgreements" ToRole="Apartments" />
+    <NavigationProperty Name="User" Relationship="Self.FK__RentalAgr__Tenan__440B1D61" FromRole="RentalAgreements" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PasswordHash" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FullName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Appointments" Relationship="Self.FK__Appointme__Prope__49C3F6B7" FromRole="Users" ToRole="Appointments" />
+    <NavigationProperty Name="Appointments1" Relationship="Self.FK__Appointme__Tenan__48CFD27E" FromRole="Users" ToRole="Appointments" />
+    <NavigationProperty Name="Messages" Relationship="Self.FK__Messages__Receiv__5070F446" FromRole="Users" ToRole="Messages" />
+    <NavigationProperty Name="Messages1" Relationship="Self.FK__Messages__Sender__4F7CD00D" FromRole="Users" ToRole="Messages" />
+    <NavigationProperty Name="Properties" Relationship="Self.FK__Propertie__Owner__3B75D760" FromRole="Users" ToRole="Properties" />
+    <NavigationProperty Name="RentalAgreements" Relationship="Self.FK__RentalAgr__Tenan__440B1D61" FromRole="Users" ToRole="RentalAgreements" />
+    <NavigationProperty Name="Properties1" Relationship="RentalDBModel.FK__Propertie__Manag__52593CB8" FromRole="User" ToRole="Property" />
+  </EntityType>
+  <Association Name="FK__Apartment__Prope__3F466844">
+    <End Role="Properties" Type="Self.Property" Multiplicity="0..1" />
+    <End Role="Apartments" Type="Self.Apartment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Properties">
+        <PropertyRef Name="PropertyID" />
+      </Principal>
+      <Dependent Role="Apartments">
+        <PropertyRef Name="PropertyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Appointme__Apart__4AB81AF0">
+    <End Role="Apartments" Type="Self.Apartment" Multiplicity="0..1" />
+    <End Role="Appointments" Type="Self.Appointment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Apartments">
+        <PropertyRef Name="ApartmentID" />
+      </Principal>
+      <Dependent Role="Appointments">
+        <PropertyRef Name="ApartmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__RentalAgr__Apart__44FF419A">
+    <End Role="Apartments" Type="Self.Apartment" Multiplicity="0..1" />
+    <End Role="RentalAgreements" Type="Self.RentalAgreement" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Apartments">
+        <PropertyRef Name="ApartmentID" />
+      </Principal>
+      <Dependent Role="RentalAgreements">
+        <PropertyRef Name="ApartmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Appointme__Prope__49C3F6B7">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Appointments" Type="Self.Appointment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Appointments">
+        <PropertyRef Name="PropertyManagerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Appointme__Tenan__48CFD27E">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Appointments" Type="Self.Appointment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Appointments">
+        <PropertyRef Name="TenantID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Messages__Receiv__5070F446">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Messages" Type="Self.Message" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Messages">
+        <PropertyRef Name="ReceiverID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Messages__Sender__4F7CD00D">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Messages" Type="Self.Message" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Messages">
+        <PropertyRef Name="SenderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Propertie__Owner__3B75D760">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Properties" Type="Self.Property" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Properties">
+        <PropertyRef Name="OwnerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__RentalAgr__Tenan__440B1D61">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="RentalAgreements" Type="Self.RentalAgreement" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="RentalAgreements">
+        <PropertyRef Name="TenantID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="RentalDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Apartments" EntityType="Self.Apartment" />
+    <EntitySet Name="Appointments" EntityType="Self.Appointment" />
+    <EntitySet Name="Messages" EntityType="Self.Message" />
+    <EntitySet Name="Properties" EntityType="Self.Property" />
+    <EntitySet Name="RentalAgreements" EntityType="Self.RentalAgreement" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK__Apartment__Prope__3F466844" Association="Self.FK__Apartment__Prope__3F466844">
+      <End Role="Properties" EntitySet="Properties" />
+      <End Role="Apartments" EntitySet="Apartments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Appointme__Apart__4AB81AF0" Association="Self.FK__Appointme__Apart__4AB81AF0">
+      <End Role="Apartments" EntitySet="Apartments" />
+      <End Role="Appointments" EntitySet="Appointments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__RentalAgr__Apart__44FF419A" Association="Self.FK__RentalAgr__Apart__44FF419A">
+      <End Role="Apartments" EntitySet="Apartments" />
+      <End Role="RentalAgreements" EntitySet="RentalAgreements" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Appointme__Prope__49C3F6B7" Association="Self.FK__Appointme__Prope__49C3F6B7">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Appointments" EntitySet="Appointments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Appointme__Tenan__48CFD27E" Association="Self.FK__Appointme__Tenan__48CFD27E">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Appointments" EntitySet="Appointments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Messages__Receiv__5070F446" Association="Self.FK__Messages__Receiv__5070F446">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Messages" EntitySet="Messages" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Messages__Sender__4F7CD00D" Association="Self.FK__Messages__Sender__4F7CD00D">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Messages" EntitySet="Messages" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Propertie__Owner__3B75D760" Association="Self.FK__Propertie__Owner__3B75D760">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Properties" EntitySet="Properties" />
+    </AssociationSet>
+    <AssociationSet Name="FK__RentalAgr__Tenan__440B1D61" Association="Self.FK__RentalAgr__Tenan__440B1D61">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="RentalAgreements" EntitySet="RentalAgreements" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Propertie__Manag__52593CB8" Association="RentalDBModel.FK__Propertie__Manag__52593CB8">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Property" EntitySet="Properties" />
+    </AssociationSet>
+  </EntityContainer>
+  <Association Name="FK__Propertie__Manag__52593CB8">
+    <End Type="RentalDBModel.User" Role="User" Multiplicity="0..1" />
+    <End Type="RentalDBModel.Property" Role="Property" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Property">
+        <PropertyRef Name="ManagerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

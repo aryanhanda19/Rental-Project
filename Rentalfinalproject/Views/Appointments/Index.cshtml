@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Rentalfinalproject.Models.Appointment>
+
+@{
+    ViewBag.Title = "Appointments";
+}
+
+<h2>Appointments</h2>
+
+<p>
+    @Html.ActionLink("Create New Appointment", "Create")
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AppointmentDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.FullName) <!-- Tenant -->
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User1.FullName) <!-- Property Manager -->
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Apartment.UnitNumber) <!-- Apartment -->
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppointmentDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User1.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Apartment.UnitNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.AppointmentID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.AppointmentID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.AppointmentID })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
